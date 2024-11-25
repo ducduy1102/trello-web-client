@@ -5,7 +5,7 @@ let apiRoot = "";
 // C1: Dùng import.meta.env của vite
 // if (import.meta.env.MODE === "development" || import.meta.env.DEV) {
 //   apiRoot = "http://localhost:8888";
-// } else if (import.meta.env.BUILD_MODE === "production") {
+// } else if (import.meta.env.BUILD_MODE === "production" import.meta.env.PROD) {
 //   apiRoot = "https://trello-web-server.onrender.com/";
 // }
 
@@ -15,5 +15,6 @@ if (process.env.BUILD_MODE === "dev") {
 } else if (process.env.BUILD_MODE === "production") {
   apiRoot = "https://trello-web-server.onrender.com/";
 }
+console.log("process.env", process.env);
 
 export const API_ROOT = apiRoot;
