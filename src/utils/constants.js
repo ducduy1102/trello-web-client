@@ -5,8 +5,8 @@ let apiRoot = "";
 // C1: Dùng import.meta.env của vite
 // if (import.meta.env.MODE === "development" || import.meta.env.DEV) {
 //   apiRoot = "http://localhost:8888";
-// } else if (import.meta.env.BUILD_MODE === "production" import.meta.env.PROD) {
-//   apiRoot = "https://trello-web-server.onrender.com/";
+// } else if (import.meta.env.BUILD_MODE === "production" || import.meta.env.PROD) {
+//   apiRoot = "https://trello-web-server.onrender.com";
 // }
 
 // C2: Config lại process.env trong vite.config.js
