@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "cross-env BUILD_MODE=dev vite",
+    "build": "cross-env BUILD_MODE=production vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -21,6 +21,7 @@
     "@mui/icons-material": "5.11.16",
     "@mui/material": "5.13.0",
     "axios": "^1.5.1",
+    "cross-env": "^7.0.3",
     "lodash": "^4.17.21",
     "material-ui-confirm": "^3.0.9",
     "react": "^18.3.1",
