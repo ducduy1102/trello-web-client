@@ -13,8 +13,7 @@ let apiRoot = "";
 if (process.env.BUILD_MODE === "dev") {
   apiRoot = "http://localhost:8888";
 } else if (process.env.BUILD_MODE === "production") {
-  apiRoot = "https://trello-web-server.onrender.com/";
+  apiRoot = "https://trello-web-server.onrender.com";
 }
-console.log("process.env", process.env);
 
 export const API_ROOT = apiRoot;
