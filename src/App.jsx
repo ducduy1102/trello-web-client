@@ -10,9 +10,9 @@ function App() {
       {/* Route định nghĩa đường dẫn và component tương ứng. */}
       {/* React Router Dom */}
       <Routes>
-        <Route path="*" element={<NotFound />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/board" element={<Board />} />
+        <Route path='*' element={<NotFound />} />
+        {/* <Route path="/" element={<Home />} /> */}
+        <Route path='/' element={<Board />} />
       </Routes>
     </>
   );
