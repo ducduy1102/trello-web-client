@@ -1,6 +1,6 @@
 import { generatePlaceholderCard } from "@/utils/formatters";
 import { mapOrder } from "@/utils/sorts";
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { isEmpty } from "lodash";
 
 // Create value state of slice
