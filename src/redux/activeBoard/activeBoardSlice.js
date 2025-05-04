@@ -2,6 +2,7 @@ import { API_ROOT } from "@/utils/constants";
 import { generatePlaceholderCard } from "@/utils/formatters";
 import { mapOrder } from "@/utils/sorts";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 import { isEmpty } from "lodash";
 
 // Create value state of slice
