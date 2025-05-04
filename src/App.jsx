@@ -11,7 +11,7 @@ function App() {
       {/* React Router Dom */}
       <Routes>
         <Route path='*' element={<NotFound />} />
-        {/* <Route path="/" element={<Home />} /> */}
+        <Route path='/' element={<Home />} />
         <Route path='/' element={<Board />} />
       </Routes>
     </>
