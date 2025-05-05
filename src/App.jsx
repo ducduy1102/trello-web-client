@@ -5,16 +5,19 @@ import Home from "@/pages/Home";
 
 function App() {
   return (
-    <>
+    <Routes>
       {/* Routes chứa danh sách các route. */}
       {/* Route định nghĩa đường dẫn và component tương ứng. */}
       {/* React Router Dom */}
-      <Routes>
-        <Route path='*' element={<NotFound />} />
-        <Route path='/' element={<Home />} />
-        <Route path='/board' element={<Board />} />
-      </Routes>
-    </>
+      <Route
+        path='/'
+        element={
+          <Navigate to={"/boards/6738aa385aacfca400f0a002"} replace={true} />
+        }
+      />
+      <Route path='/boards/:boardId' element={<Board />} />
+      <Route path='*' element={<NotFound />} />
+    </Routes>
   );
 }
 

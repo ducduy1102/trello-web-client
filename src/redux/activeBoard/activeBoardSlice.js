@@ -22,13 +22,13 @@ export const fetchBoardDetailsAPI = createAsyncThunk(
 export const activeBoardSlice = createSlice({
   name: "activeBoard",
   initialState,
-  // Synchronous data processing
+  // reducers: Synchronous data processing
   reducers: {
     updateCurrentActiveBoard: (state, action) => {
       state.currentActiveBoard = action.payload;
     },
   },
-  // extraReducers: synchronous data processing locations
+  // extraReducers: asynchronous data processing
   extraReducers: (builder) => {
     builder.addCase(fetchBoardDetailsAPI.fulfilled, (state, action) => {
       // action.payload is the response.data returned above fetchBoardDetailsAPI()

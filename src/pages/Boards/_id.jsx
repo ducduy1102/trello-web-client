@@ -19,34 +19,17 @@ import {
   selectCurrentActiveBoard,
   updateCurrentActiveBoard,
 } from "@/redux/activeBoard/activeBoardSlice";
+import { useParams } from "react-router-dom";
 
 const Board = () => {
   const dispatch = useDispatch();
   const board = useSelector(selectCurrentActiveBoard);
+  const { boardId } = useParams();
 
   useEffect(() => {
-    const boardId = "6738aa385aacfca400f0a002";
     // Call API
     dispatch(fetchBoardDetailsAPI(boardId));
-
-    // fetchBoardDetailsAPI(boardId).then((board) => {
-    //   // Sắp xếp thứ tự column ở cha trước khi truyền xuống con
-    //   board.columns = mapOrder(board.columns, board.columnOrderIds, "_id");
-
-    //   board.columns.forEach((column) => {
-    //     // Xử lý kéo thả column rỗng khi f5
-    //     if (isEmpty(column.cards)) {
-    //       column.cards = [generatePlaceholderCard(column)];
-    //       column.cardOrderIds = [generatePlaceholderCard(column)._id];
-    //     } else {
-    //       // Sắp xếp thứ tự cards ở cha trước khi truyền xuống con
-    //       column.cards = mapOrder(column.cards, column.cardOrderIds, "_id");
-    //     }
-    //   });
-    //   // console.log("board", board);
-    //   setBoard(board);
-    // });
-  }, [dispatch]);
+  }, [dispatch, boardId]);
 
   // Call lại api sau khi kéo thả column => update mảng columnOrderIds của Board chứa nó
   const moveColumns = (dndOrderedColumns) => {
