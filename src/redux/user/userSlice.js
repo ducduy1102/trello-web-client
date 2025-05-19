@@ -8,7 +8,7 @@ const initialState = {
 };
 
 export const loginUserAPI = createAsyncThunk(
-  "activeBoard/loginUserAPI",
+  "user/loginUserAPI",
   async (data) => {
     const response = await authorizedAxiosInstance.post(
       `${API_ROOT}/v1/users/login`,
