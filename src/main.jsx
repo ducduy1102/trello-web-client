@@ -13,8 +13,12 @@ import { Provider } from "react-redux";
 import { store } from "@/redux/store";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
+import { injectStore } from "@/utils/authorizeAxios";
 
 const persistor = persistStore(store);
+
+// Inject store: is a technique when you need to use redux store variables in files outside the component scope like the current authorizeAxios file
+injectStore(store);
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter basename='/'>
