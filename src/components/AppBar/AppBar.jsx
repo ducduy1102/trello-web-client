@@ -1,9 +1,7 @@
 import Box from "@mui/material/Box";
 import ModeSelect from "@/components/ModeSelect/ModeSelect";
 import AppsIcon from "@mui/icons-material/Apps";
-// import trelloLogo from "@/assets/trello.svg";
 import TrelloIcon from "@/assets/trello.svg?react";
-// import { ReactComponent as TrelloIcon } from "@/assets/trello.svg";
 import SvgIcon from "@mui/material/SvgIcon";
 import Typography from "@mui/material/Typography";
 import Workspaces from "./Menus/Workspaces";
@@ -22,6 +20,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const AppBar = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -52,33 +51,34 @@ const AppBar = () => {
         }}
       >
         <AppsIcon sx={{ color: "white" }} />
-        {/* <img src={trelloLogo} width={24} height={24} alt="Trello" /> */}
-        <Box
-          sx={{
-            width: "100%",
-            height: (theme) => theme.trello.boardBarHeight,
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-          }}
-        >
-          <SvgIcon
-            component={TrelloIcon}
-            inheritViewBox
-            fontSize="small"
-            sx={{ color: "white" }}
-          />
-          <Typography
-            variant="span"
+        <Link to='/'>
+          <Box
             sx={{
-              fontSize: "1.2rem",
-              color: "white",
-              fontWeight: "bold",
+              width: "100%",
+              height: (theme) => theme.trello.boardBarHeight,
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
             }}
           >
-            Trello
-          </Typography>
-        </Box>
+            <SvgIcon
+              component={TrelloIcon}
+              inheritViewBox
+              fontSize='small'
+              sx={{ color: "white" }}
+            />
+            <Typography
+              variant='span'
+              sx={{
+                fontSize: "1.2rem",
+                color: "white",
+                fontWeight: "bold",
+              }}
+            >
+              Trello
+            </Typography>
+          </Box>
+        </Link>
 
         <Box
           sx={{
@@ -117,22 +117,22 @@ const AppBar = () => {
         gap={3}
       >
         <TextField
-          id="outlined-search"
-          label="Search..."
-          type="text"
-          size="small"
+          id='outlined-search'
+          label='Search...'
+          type='text'
+          size='small'
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           InputProps={{
             startAdornment: (
-              <InputAdornment position="start">
+              <InputAdornment position='start'>
                 <SearchIcon sx={{ color: "white" }} />
               </InputAdornment>
             ),
             endAdornment: (
-              <InputAdornment position="end">
+              <InputAdornment position='end'>
                 <CloseIcon
-                  fontSize="small"
+                  fontSize='small'
                   sx={{
                     color: searchValue ? "white" : "transparent",
                     cursor: "pointer",
@@ -163,12 +163,12 @@ const AppBar = () => {
         />
         <ModeSelect />
 
-        <Tooltip title="Notifications">
-          <Badge color="warning" variant="dot" sx={{ cursor: "pointer" }}>
+        <Tooltip title='Notifications'>
+          <Badge color='warning' variant='dot' sx={{ cursor: "pointer" }}>
             <NotificationsNoneIcon sx={{ color: "white" }} />
           </Badge>
         </Tooltip>
-        <Tooltip title="Help">
+        <Tooltip title='Help'>
           <HelpOutlineIcon sx={{ cursor: "pointer", color: "white" }} />
         </Tooltip>
         <Profiles />
