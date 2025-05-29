@@ -41,7 +41,7 @@ const BOARD_TYPES = {
   PRIVATE: "private",
 };
 
-function SidebarCreateBoardModal() {
+function SidebarCreateBoardModal({ afterCreateNewBoard }) {
   const {
     control,
     register,
@@ -59,10 +59,13 @@ function SidebarCreateBoardModal() {
   };
 
   const submitCreateNewBoard = (data) => {
-    const { title, description, type } = data;
-    console.log("Board title: ", title);
-    console.log("Board description: ", description);
-    console.log("Board type: ", type);
+    // const { title, description, type } = data;
+    createNewBoardAPI(data).then(() => {
+      // Close modal
+      handleCloseModal();
+      // Get list new board
+      afterCreateNewBoard();
+    });
   };
 
   return (
