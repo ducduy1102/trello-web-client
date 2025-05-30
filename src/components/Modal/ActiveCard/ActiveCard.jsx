@@ -40,6 +40,7 @@ import {
   selectCurrentActiveCard,
   updateCurrentActiveCard,
 } from "@/redux/activeCard/activeCardSlice";
+import { updateCardDetailsAPI } from "@/apis";
 const SidebarItem = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
