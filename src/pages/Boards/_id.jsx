@@ -19,12 +19,10 @@ import {
 import { useParams } from "react-router-dom";
 import PageLoadingSpinner from "@/components/Loading/PageLoadingPinner";
 import ActiveCard from "@/components/Modal/ActiveCard/ActiveCard";
-import { selectCurrentActiveCard } from "@/redux/activeCard/activeCardSlice";
 
 const Board = () => {
   const dispatch = useDispatch();
   const board = useSelector(selectCurrentActiveBoard);
-  const activeCard = useSelector(selectCurrentActiveCard);
 
   const { boardId } = useParams();
 
@@ -114,8 +112,8 @@ const Board = () => {
 
   return (
     <Container disableGutters maxWidth={false} sx={{ height: "100vh" }}>
-      {/* Modal Active Card, check to open/close based on the condition of whether activeCard data exists in Redux or not before rendering. At any given time, there can only be one Active Modal Card */}
-      {activeCard && <ActiveCard />}
+      {/* Modal Active Card, check open/close based on state isShowModalActiveCard in redux*/}
+      <ActiveCard />
 
       {/* The remaining components of the Board */}
       <AppBar />

@@ -36,8 +36,9 @@ import CardActivitySection from "./CardActivitySection";
 import { styled } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  clearCurrentActiveCard,
+  clearAndHideCurrentActiveCard,
   selectCurrentActiveCard,
+  selectIsShowModalActiveCard,
   updateCurrentActiveCard,
 } from "@/redux/activeCard/activeCardSlice";
 import { updateCardDetailsAPI } from "@/apis";
@@ -66,9 +67,10 @@ const SidebarItem = styled(Box)(({ theme }) => ({
 function ActiveCard() {
   const dispatch = useDispatch();
   const activeCard = useSelector(selectCurrentActiveCard);
+  const isShowModalActiveCard = useSelector(selectIsShowModalActiveCard);
 
   const handleCloseModal = () => {
-    dispatch(clearCurrentActiveCard());
+    dispatch(clearAndHideCurrentActiveCard());
   };
 
   const callApiUpdateCard = async (updateData) => {
@@ -112,7 +114,7 @@ function ActiveCard() {
   return (
     <Modal
       disableScrollLock
-      open={true}
+      open={isShowModalActiveCard}
       onClose={handleCloseModal} // Use onClose in case you want to close the Modal by pressing the ESC button or clicking outside the Modal
       sx={{ overflowY: "auto" }}
     >

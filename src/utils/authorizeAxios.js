@@ -2,6 +2,7 @@ import { default as axios } from "axios";
 import { toast } from "react-toastify";
 import { interceptorLoadingElements } from "./formatters";
 import { refreshTokenAPI } from "@/apis";
+import { logoutUserAPI } from "@/redux/user/userSlice";
 
 /** https://redux.js.org/faq/code-structure#how-can-i-use-the-redux-store-in-non-component-files
  */
