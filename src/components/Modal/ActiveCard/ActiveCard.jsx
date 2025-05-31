@@ -41,6 +41,7 @@ import {
   updateCurrentActiveCard,
 } from "@/redux/activeCard/activeCardSlice";
 import { updateCardDetailsAPI } from "@/apis";
+import { updateCardInBoard } from "@/redux/activeBoard/activeBoardSlice";
 const SidebarItem = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -65,21 +66,18 @@ const SidebarItem = styled(Box)(({ theme }) => ({
 function ActiveCard() {
   const dispatch = useDispatch();
   const activeCard = useSelector(selectCurrentActiveCard);
-  // Do not use state variable to open/close modal => check in Board->_id.jsx
-  // const [isOpen, setIsOpen] = useState(true);
-  // const handleOpenModal = () => setIsOpen(true);
+
   const handleCloseModal = () => {
-    // setIsOpen(false);
     dispatch(clearCurrentActiveCard());
   };
 
   const callApiUpdateCard = async (updateData) => {
     const updatedCard = await updateCardDetailsAPI(activeCard._id, updateData);
-    // B1. Update card is active in current Modal
-    dispatch(updateCurrentActiveCard(updateData));
+    // Step 1. Update card is active in current Modal
+    dispatch(updateCurrentActiveCard(updatedCard));
 
-    // B2. Update card in activeBoard (nested data)
-    // dispatch(updateCardInBoard(updatedCard))
+    // Step 2. Update card in activeBoard (nested data)
+    dispatch(updateCardInBoard(updatedCard));
     return updatedCard;
   };
 
@@ -87,8 +85,11 @@ function ActiveCard() {
     callApiUpdateCard({ title: newTitle.trim() });
   };
 
+  const onUpdateCardDescription = (newDescription) => {
+    callApiUpdateCard({ description: newDescription });
+  };
+
   const onUploadCardCover = (event) => {
-    console.log(event.target?.files[0]);
     const error = singleFileValidator(event.target?.files[0]);
     if (error) {
       toast.error(error);
@@ -97,7 +98,15 @@ function ActiveCard() {
     let reqData = new FormData();
     reqData.append("cardCover", event.target?.files[0]);
 
-    // Gọi API...
+    // Call API...
+    toast.promise(
+      callApiUpdateCard(reqData).finally(() => (event.target.value = "")),
+      {
+        pending: "Updating...",
+        success: "Updated card cover successfully!",
+        error: "Update failed!",
+      }
+    );
   };
 
   return (
@@ -199,7 +208,10 @@ function ActiveCard() {
               </Box>
 
               {/* Feature 03: Handling Card Description Editor*/}
-              <CardDescriptionMdEditor />
+              <CardDescriptionMdEditor
+                cardDescriptionProp={activeCard?.description}
+                handleUpdateCardDescription={onUpdateCardDescription}
+              />
             </Box>
 
             <Box sx={{ mb: 3 }}>

@@ -29,6 +29,29 @@ export const activeBoardSlice = createSlice({
     updateCurrentActiveBoard: (state, action) => {
       state.currentActiveBoard = action.payload;
     },
+    updateCardInBoard: (state, action) => {
+      // Update nested data
+      // https://redux-toolkit.js.org/usage/immer-reducers#updating-nested-data
+      const incomingCard = action.payload;
+
+      // Find board -> column -> card
+      const column = state.currentActiveBoard.columns.find(
+        (i) => i._id === incomingCard.columnId
+      );
+
+      if (column) {
+        const card = column.cards.find((i) => i._id === incomingCard._id);
+        if (card) {
+          // card.title = incomingCard.title;
+          // or card["title"] = incomingCard["title"];
+          // card["description"] = incomingCard["description"];
+          // Object.keys gets all properties (keys) of incomingCard into an array then forEach to update
+          Object.keys(incomingCard).forEach((key) => {
+            card[key] = incomingCard[key];
+          });
+        }
+      }
+    },
   },
   // extraReducers: asynchronous data processing
   extraReducers: (builder) => {
@@ -57,7 +80,8 @@ export const activeBoardSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { updateCurrentActiveBoard } = activeBoardSlice.actions;
+export const { updateCurrentActiveBoard, updateCardInBoard } =
+  activeBoardSlice.actions;
 
 // Selectors
 export const selectCurrentActiveBoard = (state) => {

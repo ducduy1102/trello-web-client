@@ -21,7 +21,10 @@ const markdownValueExample = `
  * Example:
  * https://codesandbox.io/embed/markdown-editor-for-react-izdd6?fontsize=14&hidenavigation=1&theme=dark
  */
-function CardDescriptionMdEditor() {
+function CardDescriptionMdEditor({
+  cardDescriptionProp,
+  handleUpdateCardDescription,
+}) {
   // Get the 'dark', 'light' or 'system' mode value from MUI to support the Markdown below: data-color-mode={mode}
   // https://www.npmjs.com/package/@uiw/react-md-editor#support-dark-modenight-mode
   const { mode } = useColorScheme();
@@ -29,11 +32,11 @@ function CardDescriptionMdEditor() {
   // State handles Edit mode and View mode
   const [markdownEditMode, setMarkdownEditMode] = useState(false);
   // State handles markdown values ​​when editing
-  const [cardDescription, setCardDescription] = useState(markdownValueExample);
+  const [cardDescription, setCardDescription] = useState(cardDescriptionProp);
 
   const updateCardDescription = () => {
     setMarkdownEditMode(false);
-    console.log("cardDescription: ", cardDescription);
+    handleUpdateCardDescription(cardDescription);
   };
 
   return (
