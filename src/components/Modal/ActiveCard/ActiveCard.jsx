@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
@@ -109,6 +108,10 @@ function ActiveCard() {
         error: "Update failed!",
       }
     );
+  };
+
+  const onAddCardComment = async (commentToAdd) => {
+    await callApiUpdateCard({ commentToAdd });
   };
 
   return (
@@ -228,7 +231,10 @@ function ActiveCard() {
               </Box>
 
               {/* Feature 04: Handling actions, for example commenting on Card */}
-              <CardActivitySection />
+              <CardActivitySection
+                cardComments={activeCard?.comments}
+                onAddCardComment={onAddCardComment}
+              />
             </Box>
           </Grid>
 
