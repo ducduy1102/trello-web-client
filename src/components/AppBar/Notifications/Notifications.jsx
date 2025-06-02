@@ -88,7 +88,7 @@ function Notifications() {
             You do not have any new notifications.
           </MenuItem>
         )}
-        {notifications.map((notification, index) => (
+        {notifications?.map((notification, index) => (
           <Box key={index}>
             <MenuItem
               sx={{
