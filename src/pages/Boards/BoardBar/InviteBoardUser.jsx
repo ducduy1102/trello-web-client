@@ -14,6 +14,7 @@ import {
 } from "@/utils/validators";
 import FieldErrorAlert from "@/components/Form/FieldErrorAlert";
 import { inviteUserToBoardAPI } from "@/apis";
+import { socketIoInstance } from "@/main";
 
 function InviteBoardUser({ boardId }) {
   const [anchorPopoverElement, setAnchorPopoverElement] = useState(null);
@@ -34,11 +35,12 @@ function InviteBoardUser({ boardId }) {
     const { inviteeEmail } = data;
 
     // Call API invite user into members
-    inviteUserToBoardAPI({ inviteeEmail, boardId }).then(() => {
+    inviteUserToBoardAPI({ inviteeEmail, boardId }).then((invitation) => {
       // Clear the input tag using react-hook-form with setValue, and close the popover
       setValue("inviteeEmail", null);
       setAnchorPopoverElement(null);
-      // After inviting a user to the board, it will also send/emit the socket event to the server (real-time feature)
+      // After inviting a user to the board, it will also send/emit the socket event to the server (real-time feature) -> FE_USER_INVITED_TO_BOARD
+      socketIoInstance.emit("FE_USER_INVITED_TO_BOARD", invitation);
     });
   };
 

@@ -15,10 +15,14 @@ import DoneIcon from "@mui/icons-material/Done";
 import NotInterestedIcon from "@mui/icons-material/NotInterested";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  addNotification,
   fetchInvitationsAPI,
   selectCurrentNotifications,
   updateBoardInvitationAPI,
 } from "@/redux/notifications/notificationsSlice";
+import { socketIoInstance } from "@/main";
+import { selectCurrentUser } from "@/redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const BOARD_INVITATION_STATUS = {
   PENDING: "PENDING",
@@ -29,12 +33,21 @@ const BOARD_INVITATION_STATUS = {
 function Notifications() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
+  // Variable check new notification
+  const [newNotification, setNewNotification] = useState(false);
+
   const handleClickNotificationIcon = (event) => {
     setAnchorEl(event.currentTarget);
+    // When clicking on the icon, reset the newNotification variable to false
+    setNewNotification(false);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  // Get user data from redux
+  const currentUser = useSelector(selectCurrentUser);
 
   // Get notification data from redux
   const notifications = useSelector(selectCurrentNotifications);
@@ -43,12 +56,38 @@ function Notifications() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchInvitationsAPI());
-  }, [dispatch]);
+
+    // Create a processing function when receiving real-time events, docs guide
+    // https://socket.io/how-to/use-with-react
+    const onReceiveNewInvitation = (invitation) => {
+      // If the current logged in user that we save in redux is the invitee in the invitation record
+      if (invitation.inviteeId === currentUser._id) {
+        // Step 1. Add new invitation record into redux
+        dispatch(addNotification(invitation));
+        // Step 2. Update status of incoming notification
+        setNewNotification(true);
+      }
+    };
+
+    // Listen for a real-time event named BE_USER_INVITED_TO_BOARD sent from the server
+    socketIoInstance.on("BE_USER_INVITED_TO_BOARD", onReceiveNewInvitation);
+
+    // Clean up event to prevent duplicate event registrations
+    // https://socket.io/how-to/use-with-react#cleanup
+    return () => {
+      socketIoInstance.off("BE_USER_INVITED_TO_BOARD", onReceiveNewInvitation);
+    };
+  }, [dispatch, currentUser._id]);
 
   // Update the status of the join board invitation
   const updateBoardInvitation = (status, invitationId) => {
     dispatch(updateBoardInvitationAPI({ status, invitationId })).then((res) => {
-      console.log("🚀 ~ dispatch ~ res:", res);
+      // console.log("🚀 ~ dispatch ~ res:", res);
+      if (
+        res.payload.boardInvitation.status === BOARD_INVITATION_STATUS.ACCEPTED
+      ) {
+        navigate(`/boards/${res.payload.boardInvitation.boardId}`);
+      }
     });
   };
 
@@ -57,8 +96,7 @@ function Notifications() {
       <Tooltip title='Notifications'>
         <Badge
           color='warning'
-          // variant="none"
-          variant='dot'
+          variant={newNotification ? "dot" : "none"}
           sx={{ cursor: "pointer" }}
           id='basic-button-open-notification'
           aria-controls={open ? "basic-notification-drop-down" : undefined}
@@ -68,8 +106,7 @@ function Notifications() {
         >
           <NotificationsNoneIcon
             sx={{
-              // color: 'white'
-              color: "yellow",
+              color: newNotification ? "yellow" : "white",
             }}
           />
         </Badge>
