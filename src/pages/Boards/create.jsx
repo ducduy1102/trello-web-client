@@ -17,6 +17,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
 import { styled } from "@mui/material/styles";
+import { createNewBoardAPI } from "@/apis";
 const SidebarItem = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
