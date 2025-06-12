@@ -9,6 +9,7 @@ import { selectCurrentUser } from "@/redux/user/userSlice";
 import Settings from "@/pages/Settings/Settings";
 import Boards from "@/pages/Boards";
 import { initSocket } from "./socketClient";
+import { useEffect } from "react";
 
 // Route allowed access after login
 // Outlet show Child Route
