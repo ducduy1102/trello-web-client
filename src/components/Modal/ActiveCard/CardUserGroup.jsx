@@ -6,8 +6,11 @@ import Popover from "@mui/material/Popover";
 import AddIcon from "@mui/icons-material/Add";
 import Badge from "@mui/material/Badge";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { useSelector } from "react-redux";
+import { selectCurrentActiveBoard } from "@/redux/activeBoard/activeBoardSlice";
+import { CARD_MEMBER_ACTIONS } from "@/utils/constants";
 
-function CardUserGroup({ cardMemberIds = [] }) {
+function CardUserGroup({ cardMemberIds = [], onUpdateCardMembers }) {
   /**
    * https://mui.com/material-ui/react-popover/
    */
@@ -19,15 +22,36 @@ function CardUserGroup({ cardMemberIds = [] }) {
     else setAnchorPopoverElement(null);
   };
 
+  // Get activeBoard from redux to get all information of members of the board through field FE_allUsers
+  const board = useSelector(selectCurrentActiveBoard);
+  // const FE_CardMembers = board.FE_allUsers?.filter((user) =>
+  //   cardMemberIds.includes(user._id)
+  // );
+  const FE_CardMembers = cardMemberIds.map((id) =>
+    board.FE_allUsers.find((u) => u._id === id)
+  );
+
+  const handleUpdateCardMembers = (user) => {
+    // Create an incomingMemberInfo variable to send to BE, with 2 main information: userId and action: remove from card (REMOVE) or add to card (ADD)
+    const incomingMemberInfo = {
+      userId: user._id,
+      action: cardMemberIds.includes(user._id)
+        ? CARD_MEMBER_ACTIONS.REMOVE
+        : CARD_MEMBER_ACTIONS.ADD,
+    };
+
+    onUpdateCardMembers(incomingMemberInfo);
+  };
+
   return (
     <Box sx={{ display: "flex", gap: "4px", flexWrap: "wrap" }}>
       {/* Display users who are members of the card */}
-      {[...Array(8)].map((_, index) => (
-        <Tooltip title='ducduydev' key={index}>
+      {FE_CardMembers.map((user, index) => (
+        <Tooltip title={user.displayName} key={index}>
           <Avatar
             sx={{ width: 34, height: 34, cursor: "pointer" }}
-            alt='ducduydev'
-            src='https://trungquandev.com/wp-content/uploads/2019/06/trungquandev-cat-avatar.png'
+            alt={user.displayName}
+            src={user.avatar}
           />
         </Tooltip>
       ))}
@@ -82,21 +106,27 @@ function CardUserGroup({ cardMemberIds = [] }) {
             gap: 1.5,
           }}
         >
-          {[...Array(16)].map((_, index) => (
-            <Tooltip title='ducduydev' key={index}>
+          {board.FE_allUsers.map((user, index) => (
+            <Tooltip title={user.displayName} key={index}>
               {/* Avatar + badge icon: https://mui.com/material-ui/react-avatar/#with-badge */}
               <Badge
                 sx={{ cursor: "pointer" }}
                 overlap='rectangular'
                 anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                 badgeContent={
-                  <CheckCircleIcon fontSize='small' sx={{ color: "#27ae60" }} />
+                  cardMemberIds.includes(user._id) ? (
+                    <CheckCircleIcon
+                      fontSize='small'
+                      sx={{ color: "#27ae60" }}
+                    />
+                  ) : null
                 }
+                onClick={() => handleUpdateCardMembers(user)}
               >
                 <Avatar
                   sx={{ width: 34, height: 34 }}
-                  alt='ducduydev'
-                  src='https://trungquandev.com/wp-content/uploads/2019/06/trungquandev-cat-avatar.png'
+                  alt={user.displayName}
+                  src={user.avatar}
                 />
               </Badge>
             </Tooltip>

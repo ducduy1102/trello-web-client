@@ -114,6 +114,10 @@ function ActiveCard() {
     await callApiUpdateCard({ commentToAdd });
   };
 
+  const onUpdateCardMembers = (incomingMemberInfo) => {
+    callApiUpdateCard({ incomingMemberInfo });
+  };
+
   return (
     <Modal
       disableScrollLock
@@ -198,7 +202,10 @@ function ActiveCard() {
               </Typography>
 
               {/* Feature 02: Handling Card members */}
-              <CardUserGroup />
+              <CardUserGroup
+                cardMemberIds={activeCard?.memberIds}
+                onUpdateCardMembers={onUpdateCardMembers}
+              />
             </Box>
 
             <Box sx={{ mb: 3 }}>
