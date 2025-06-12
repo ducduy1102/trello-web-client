@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/redux/user/userSlice";
 import Settings from "@/pages/Settings/Settings";
 import Boards from "@/pages/Boards";
+import { initSocket } from "./socketClient";
 
 // Route allowed access after login
 // Outlet show Child Route
@@ -18,6 +19,15 @@ const ProtectedRoute = ({ user }) => {
 
 function App() {
   const currentUser = useSelector(selectCurrentUser);
+
+  // Call socket
+  useEffect(() => {
+    const socket = initSocket();
+
+    return () => {
+      socket?.disconnect();
+    };
+  }, []);
 
   return (
     <Routes>

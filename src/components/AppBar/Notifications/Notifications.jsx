@@ -20,7 +20,7 @@ import {
   selectCurrentNotifications,
   updateBoardInvitationAPI,
 } from "@/redux/notifications/notificationsSlice";
-import { socketIoInstance } from "@/socketClient";
+import { getSocket } from "@/socketClient";
 import { selectCurrentUser } from "@/redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -36,6 +36,9 @@ function Notifications() {
   const navigate = useNavigate();
   // Variable check new notification
   const [newNotification, setNewNotification] = useState(false);
+
+  // Call socket
+  const socketIoInstance = getSocket();
 
   const handleClickNotificationIcon = (event) => {
     setAnchorEl(event.currentTarget);

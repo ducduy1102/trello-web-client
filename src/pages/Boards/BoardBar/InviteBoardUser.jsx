@@ -14,7 +14,7 @@ import {
 } from "@/utils/validators";
 import FieldErrorAlert from "@/components/Form/FieldErrorAlert";
 import { inviteUserToBoardAPI } from "@/apis";
-import { socketIoInstance } from "@/socketClient";
+import { getSocket } from "@/socketClient";
 
 function InviteBoardUser({ boardId }) {
   const [anchorPopoverElement, setAnchorPopoverElement] = useState(null);
@@ -24,6 +24,9 @@ function InviteBoardUser({ boardId }) {
     if (!anchorPopoverElement) setAnchorPopoverElement(event.currentTarget);
     else setAnchorPopoverElement(null);
   };
+
+  // Call socket
+  const socketIoInstance = getSocket();
 
   const {
     register,
