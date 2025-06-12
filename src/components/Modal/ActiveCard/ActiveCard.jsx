@@ -42,6 +42,8 @@ import {
 } from "@/redux/activeCard/activeCardSlice";
 import { updateCardDetailsAPI } from "@/apis";
 import { updateCardInBoard } from "@/redux/activeBoard/activeBoardSlice";
+import { selectCurrentUser } from "@/redux/user/userSlice";
+import { CARD_MEMBER_ACTIONS } from "@/utils/constants";
 const SidebarItem = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -67,6 +69,7 @@ function ActiveCard() {
   const dispatch = useDispatch();
   const activeCard = useSelector(selectCurrentActiveCard);
   const isShowModalActiveCard = useSelector(selectIsShowModalActiveCard);
+  const currentUser = useSelector(selectCurrentUser);
 
   const handleCloseModal = () => {
     dispatch(clearAndHideCurrentActiveCard());
@@ -254,10 +257,22 @@ function ActiveCard() {
             </Typography>
             <Stack direction='column' spacing={1}>
               {/* Feature 05: Handling user's own actions to join the card */}
-              <SidebarItem className='active'>
-                <PersonOutlineOutlinedIcon fontSize='small' />
-                Join
-              </SidebarItem>
+              {/* If the current logged in user is not in the card's memberIds array, the Join button will be displayed */}
+              {/* When clicking Join, it will always be an ADD action */}
+              {!activeCard?.memberIds?.includes(currentUser._id) && (
+                <SidebarItem
+                  className='active'
+                  onClick={() =>
+                    onUpdateCardMembers({
+                      userId: currentUser._id,
+                      action: CARD_MEMBER_ACTIONS.ADD,
+                    })
+                  }
+                >
+                  <PersonOutlineOutlinedIcon fontSize='small' />
+                  Join
+                </SidebarItem>
+              )}
               {/* Feature 06: Handle the action of updating the Card Cover image */}
               <SidebarItem className='active' component='label'>
                 <ImageOutlinedIcon fontSize='small' />
