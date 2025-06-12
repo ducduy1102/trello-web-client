@@ -21,11 +21,6 @@ const persistor = persistStore(store);
 // Inject store: is a technique when you need to use redux store variables in files outside the component scope like the current authorizeAxios file
 injectStore(store);
 
-// https://socket.io/how-to/use-with-react#example
-import { io } from "socket.io-client";
-import { API_ROOT } from "@/utils/constants";
-export const socketIoInstance = io(API_ROOT);
-
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <PersistGate persistor={persistor}>
