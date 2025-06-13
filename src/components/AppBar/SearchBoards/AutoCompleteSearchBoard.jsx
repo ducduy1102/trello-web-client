@@ -5,6 +5,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import { createSearchParams, useNavigate } from "react-router-dom";
+import { fetchBoardsAPI } from "@/apis";
+import { useDebounceFn } from "@/customHooks/useDebounceFn";
 
 /**
  * https://mui.com/material-ui/react-autocomplete/#asynchronous-requests
@@ -30,20 +32,31 @@ function AutoCompleteSearchBoard() {
   const handleInputSearchChange = (event) => {
     const searchValue = event.target?.value;
     if (!searchValue) return;
-    console.log(searchValue);
 
     // Use react-router-dom's createSearchParams to create a standard searchPath with q[title] to call the API
     const searchPath = `?${createSearchParams({ "q[title]": searchValue })}`;
-    console.log(searchPath);
+    // Expand
+    // const searchPath = `?${createSearchParams({ "q[title]": searchValue, "q[desc]": searchDescription })}`;
 
     // Call API...
+    setLoading(true);
+    fetchBoardsAPI(searchPath)
+      .then((res) => {
+        setBoards(res.boards || []);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
   // Do useDebounceFn...
+  const debounceSearchBoard = useDebounceFn(handleInputSearchChange, 1000);
 
   // When we select a specific board, we will navigate to that board
   const handleSelectedBoard = (event, selectedBoard) => {
     // Check if a specific board is selected before calling navigate
-    console.log(selectedBoard);
+    if (selectedBoard) {
+      navigate(`/boards/${selectedBoard._id}`);
+    }
   };
 
   return (
@@ -66,7 +79,7 @@ function AutoCompleteSearchBoard() {
       isOptionEqualToValue={(option, value) => option._id === value._id}
       loading={loading}
       // onInputChange will run when typing content into the input tag
-      onInputChange={handleInputSearchChange}
+      onInputChange={debounceSearchBoard}
       // onChange of the entire Autocomplete will run when we select a result (here is board)
       onChange={handleSelectedBoard}
       // Render the input tag to enter search content
